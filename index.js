@@ -94,13 +94,14 @@ app.get('/api/contient', (req, res) => {
   
   database.query('SELECT * FROM rabbit WHERE name="Roger"', (err, results) => {
     if(err) {
-      res.status(500).send('Erreur lors de la recherche par date >');
+      res.status(500).send('Erreur lors de la recherche contient');
     }else{
       res.json(results);
     }
   });
 });
 
+// Ajout d'une entité
 app.post('/api/rabbits', (req, res) => {
 
   // récupération des données envoyées
@@ -141,7 +142,7 @@ app.put('/api/rabbitFamous', (req, res) => {
   
   database.query('UPDATE rabbit SET famous =not famous', [formData], err => {
     if(err) {
-      res.status(500).send('Erreur lors de la modification');
+      res.status(500).send('Erreur lors de la modification du booléen');
     }else{
       res.sendStatus(200);
     }
