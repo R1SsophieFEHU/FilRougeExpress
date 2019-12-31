@@ -101,17 +101,24 @@ app.get('/api/contient', (req, res) => {
   });
 });
 
-// app.post('/api/rabbit', (req, res) => {
-//   const formData = req.body;
-  
-//   database.query('INSERT INTO rabbit SET ?', [formData], err => {
-//     if(err) {
-//       res.status(500).send('Erreur lors de l ajout');
-//     }else{
-//       res.sendStatus(200);
-//     }
-//   });
-// });
+app.post('/api/rabbits', (req, res) => {
+
+  // récupération des données envoyées
+  const formData = req.body;
+
+  // connexion à la base de données, et insertion du nouveau lapin
+  database.query('INSERT INTO rabbit SET ?', formData, (err, results) => {
+
+    if (err) {
+      // Si une erreur est survenue, alors on informe l'utilisateur de l'erreur
+      console.log(err);
+      res.status(500).send("Erreur lors de la sauvegarde d'un lapin");
+    } else {
+      // Si tout s'est bien passé, on envoie un statut "ok".
+      res.sendStatus(200);
+    }
+  });
+});
 
 //Modifier une entité
 app.put('/api/rabbit', (req, res) => {
