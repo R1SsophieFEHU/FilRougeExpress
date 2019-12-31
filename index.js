@@ -26,24 +26,60 @@ app.get('/api/rabbits/:name', (req, res) => {
     if(err) {
       res.status(500).send('Erreur lors de la recherche par name');
     }else{
-      res.json(results[0]);
+      res.json(results);
     }
   });
 });
 
-//récupère les données en filtrant
-app.get('/api/allRabbits', (req, res) => {
-  const alpha = req.params.name;
+//récupère plusieurs champs de la table 
+app.get('/api/rabbits2/', (req, res) => {
 
-  database.query('SELECT name FROM rabbit ORDER BY name ASC', [alpha], (err, results) => {
+
+  database.query('SELECT name, birthdate, comments FROM rabbit ORDER BY name ASC', (err, results) => {
     if(err) {
-      res.status(500).send('Erreur lors de la recherche par name');
+      res.status(500).send('Erreur lors de la recherche par champs');
     }else{
       res.json(results);
     }
   });
 });
 
+//récupère les données en filtrant par ordre alphabétique
+app.get('/api/allRabbits', (req, res) => {
+
+
+  database.query('SELECT name FROM rabbit ORDER BY name ASC', (err, results) => {
+    if(err) {
+      res.status(500).send('Erreur lors de la recherche par ordre alphabétique');
+    }else{
+      res.json(results);
+    }
+  });
+});
+
+//récupère les données qui commence par...
+app.get('/api/C', (req, res) => {
+  
+  database.query('SELECT name FROM rabbit WHERE name LIKE "C%"', (err, results) => {
+    if(err) {
+      res.status(500).send('Erreur lors de la recherche commence par');
+    }else{
+      res.json(results);
+    }
+  });
+});
+
+//récupère les données dont la date est > à
+app.get('/api/date', (req, res) => {
+  
+  database.query('SELECT * FROM rabbit WHERE birthdate >"2008-01-01"', (err, results) => {
+    if(err) {
+      res.status(500).send('Erreur lors de la recherche par date >');
+    }else{
+      res.json(results);
+    }
+  });
+});
 
 
 
