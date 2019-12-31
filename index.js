@@ -101,12 +101,38 @@ app.get('/api/contient', (req, res) => {
   });
 });
 
+// app.post('/api/rabbit', (req, res) => {
+//   const formData = req.body;
+  
+//   database.query('INSERT INTO rabbit SET ?', [formData], err => {
+//     if(err) {
+//       res.status(500).send('Erreur lors de l ajout');
+//     }else{
+//       res.sendStatus(200);
+//     }
+//   });
+// });
+
 //Modifier une entité
 app.put('/api/rabbit', (req, res) => {
   const idRabbit = req.body.id;
   const formData = req.body;
   
   database.query('UPDATE rabbit SET ? WHERE id=?', [formData, idRabbit], err => {
+    if(err) {
+      res.status(500).send('Erreur lors de la modification');
+    }else{
+      res.sendStatus(200);
+    }
+  });
+});
+
+//modification du booléen
+app.put('/api/rabbitFamous', (req, res) => {
+  const idRabbit = req.body.id;
+  const formData = req.body;
+  
+  database.query('UPDATE rabbit SET famous =not famous', [formData, idRabbit], err => {
     if(err) {
       res.status(500).send('Erreur lors de la modification');
     }else{
