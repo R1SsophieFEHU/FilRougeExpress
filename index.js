@@ -127,14 +127,42 @@ app.put('/api/rabbit', (req, res) => {
   });
 });
 
-//modification du booléen
+//modification du booléen, toutes les valeurs sont modifiées
 app.put('/api/rabbitFamous', (req, res) => {
-  const idRabbit = req.body.id;
+
   const formData = req.body;
   
-  database.query('UPDATE rabbit SET famous =not famous', [formData, idRabbit], err => {
+  database.query('UPDATE rabbit SET famous =not famous', [formData], err => {
     if(err) {
       res.status(500).send('Erreur lors de la modification');
+    }else{
+      res.sendStatus(200);
+    }
+  });
+});
+
+//suppression d'une entité
+app.delete('/api/rabbit', (req, res) => {
+
+  const idRabbit = req.body.id;
+  
+  database.query('DELETE FROM rabbit WHERE id=?', [idRabbit], err => {
+    if(err) {
+      res.status(500).send('Erreur lors de la suppression');
+    }else{
+      res.sendStatus(200);
+    }
+  });
+});
+
+//suppression des entités avec booléen false
+app.delete('/api/rabbitBoolean', (req, res) => {
+
+  const suppRabbit = req.body;
+  
+  database.query('DELETE FROM rabbit WHERE famous=0', [suppRabbit], err => {
+    if(err) {
+      res.status(500).send('Erreur lors de la suppression booléen');
     }else{
       res.sendStatus(200);
     }
