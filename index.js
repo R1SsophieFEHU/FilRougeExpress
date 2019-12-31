@@ -3,6 +3,14 @@ const app = express();
 const port = 3000;
 const database = require('./conf');
 
+const bodyParser = require('body-parser');
+// Support JSON-encoded bodies
+app.use(bodyParser.json());
+// Support URL-encoded bodies
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+
 app.get('/', (request, response) => {
   response.send('Bienvenue sur Express');
 });
@@ -70,7 +78,7 @@ app.get('/api/C', (req, res) => {
 });
 
 //récupère les données dont la date est > à
-app.get('/api/date', (req, res) => {
+app.get('/api/dateSup2008', (req, res) => {
   
   database.query('SELECT * FROM rabbit WHERE birthdate >"2008-01-01"', (err, results) => {
     if(err) {
@@ -81,6 +89,31 @@ app.get('/api/date', (req, res) => {
   });
 });
 
+//récupère les données qui contiennent
+app.get('/api/contient', (req, res) => {
+  
+  database.query('SELECT * FROM rabbit WHERE name="Roger"', (err, results) => {
+    if(err) {
+      res.status(500).send('Erreur lors de la recherche par date >');
+    }else{
+      res.json(results);
+    }
+  });
+});
+
+//Modifier une entité
+app.put('/api/rabbit', (req, res) => {
+  const idRabbit = req.body.id;
+  const formData = req.body;
+  
+  database.query('UPDATE rabbit SET ? WHERE id=?', [formData, idRabbit], err => {
+    if(err) {
+      res.status(500).send('Erreur lors de la modification');
+    }else{
+      res.sendStatus(200);
+    }
+  });
+});
 
 
 app.listen(port, (err) => {
